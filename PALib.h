@@ -2,6 +2,9 @@
 
 using namespace std;
 
+#define TIME     GetTickCount()/100
+#define KEY      GetAsyncKeyState
+
 class pixel
 {
     public:

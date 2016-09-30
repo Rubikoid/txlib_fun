@@ -5,8 +5,6 @@
 
 
 #define mode_max 1
-#define TIME     GetTickCount()/100
-#define KEY      GetAsyncKeyState
 
 int main()
 {
