@@ -4365,9 +4365,9 @@ struct txDialog
 //! @endcode
 //}----------------------------------------------------------------------------------------------------------------
 
-const char* txInputBox (const char* text = NULL, const char* caption = NULL, const char* input = NULL);
+char* txInputBox (const char* text = NULL, const char* caption = NULL, const char* input = NULL);
 
-const char* txInputBox (const char* text, const char* caption, const char* input)
+char* txInputBox (const char* text, const char* caption, const char* input)
     {
     //-------------------------------------------------------------------------------------------------------------
     // ≈сли не указаны параметры, приходитс€ использовать хоть какие-то надписи.
@@ -8485,10 +8485,10 @@ struct _txSaveConsoleAttr
 //=================================================================================================================
 // EOF
 //=================================================================================================================
-                                                                                                                   
-                                                                                                                   
-                                                                                                                   
-              
+
+
+
+
 
 
 
