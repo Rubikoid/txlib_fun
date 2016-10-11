@@ -7,10 +7,10 @@ int main()
 {
     char mod[20], *message;
     long Time = 0, T0 = 0;
-    vector<pixel> pixs;
+    movsCtrl mvs;
     message = txInputBox("¬ведите название группы:");
     strcat(message,".txt");
-    pixs = load_file(message);
+    mvs = movsCtrl(message);
     txCreateWindow(800,500, true);
     txSetFillColour(RGB(50,50,50));
     txClear();
@@ -23,15 +23,17 @@ int main()
         txBegin();
         sprintf(mod, "TIME:%d\0", ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
-        for(int i=0;i<pixs.size();i++)
+        for(int k=0;k<mvs.movs.size();k++)
         {
-            for(int x=pixs[i].x;x<pixs[i].x+4;x++)
+            for(int i=0;i<mvs.movs[k].pix.size();i++)
             {
-                for(int y=pixs[i].y;y<pixs[i].y+4;y++)
-                txSetPixel(x, y,pixs[i].color);
+                for(int x=mvs.movs[k].pix[i].x;x<mvs.movs[k].pix[i].x+4;x++)
+                {
+                    for(int y=mvs.movs[k].pix[i].y;y<mvs.movs[k].pix[i].y+4;y++)
+                    txSetPixel(x, y,mvs.movs[k].pix[i].color);
+                }
             }
-            pixs[i].x+=1;
-            //pixs[i].y+=1;
+            mvs.movs[k].do_move();
         }
         txEnd();
         txSleep(10);
