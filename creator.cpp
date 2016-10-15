@@ -22,10 +22,10 @@ int main()
     txClear();
     Time = TIME;
     T0 = Time;
+    txBegin();
     while(!KEY(VK_ESCAPE))
     {
-        if(mode == mode_max) txClear();
-        txBegin();
+        txClear();
         sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
         for(int i=0;i<pixs.size();i++){ for(int x=pixs[i].x;x<pixs[i].x+4;x++){ for(int y=pixs[i].y;y<pixs[i].y+4;y++) txSetPixel(x, y,pixs[i].color); } }
@@ -47,9 +47,9 @@ int main()
             pixs.insert(pixs.end(), pixel(-1,-1,RGB(255,0,0)));
             txClear();
         }
-        //if(mode != mode_max) txSleep(1);
-        txEnd();
+        txSleep(10);
     }
+    txEnd();
     save_file(message, pixs);
     return 0;
 }
