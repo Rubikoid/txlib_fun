@@ -53,8 +53,8 @@ class mv
         pix = load_file(name);
         x=0;
         y=0;
-        rollCX=80;
-        rollCY=80;
+        rollCX=0;
+        rollCY=0;
         roll = 0.0;
         centerX=0;
         centerY=0;
@@ -66,8 +66,8 @@ class mv
         for(int i=0;i<pix.size();i++)
         {
             int x_start = pix[i].x;
-            pix[i].x = rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
-            pix[i].y = rollY(x_start, pix[i].y, rollCX, rollCY, roll);
+            pix[i].x = (int)rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
+            pix[i].y = (int)rollY(x_start, pix[i].y, rollCX, rollCY, roll);
             pix[i].x += x;
             pix[i].y += y;
         }
@@ -79,6 +79,7 @@ class mv
 
     void get_center()
     {
+        if(pix.size() <= 0) return;
         int sumX;
         int sumY;
         for(int i=0;i<pix.size();i++)
@@ -90,6 +91,8 @@ class mv
         centerY = (int)(sumY/pix.size());
         //rollCX+=centerX;
         //rollCY+=centerY;
+        rollCX=30;
+        rollCY=30;
     }
 };
 
@@ -175,10 +178,20 @@ double cosin(float roll)
 
 double rollX(int x, int y, int cX, int cY, float roll)
 {
-    return ((x-cX)*cosin(roll)+(y-cY)*sinus(roll)+cX);
+    int rx = x - cX;
+    int ry = y - cY;
+    double ret = rx*cosin(roll)+ry*sinus(roll)+cX;
+    return ret;
+	//return ((x)*cosin(roll)+(y)*sinus(roll));
+    //return 0.0;
 }
 
 double rollY(int x, int y, int cX, int cY, float roll)
 {
-    return ((y-cY)*cosin(roll) - (x-cX)*sinus(roll)+cY);
+    int rx = x - cX;
+    int ry = y - cY;
+    double ret = ry*cosin(roll) - rx*sinus(roll)+cY;
+    return ret;
+	//return ((y)*cosin(roll) - (x)*sinus(roll));
+    //return 0.0;
 }

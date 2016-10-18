@@ -19,6 +19,7 @@ int main()
     pixs = load_file(message);
     txCreateWindow(800,500, true);
     txSetFillColour(RGB(50,50,50));
+    txTextCursor(false);
     txClear();
     Time = TIME;
     T0 = Time;
