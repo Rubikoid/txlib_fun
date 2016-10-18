@@ -17,7 +17,6 @@ int main()
     txClear();
     Time = TIME;
     T0 = Time;
-    int move = 0;
     txBegin();
     while(!KEY(VK_ESCAPE))
     {
