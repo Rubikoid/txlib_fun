@@ -36,7 +36,7 @@ int main()
         }
         sprintf(mod, "TIME:%d;X:%d,Y:%d\0", ((TIME - T0)/10)%1000, mvs.movs[0].pix[1].x, mvs.movs[0].pix[1].y);
         txTextOut(500, 30, mod);
-        txSleep(100);
+        txSleep(10);
     }
     txEnd();
     return 0;

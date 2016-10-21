@@ -80,19 +80,18 @@ class mv
     void get_center()
     {
         if(pix.size() <= 0) return;
-        int sumX;
-        int sumY;
+        int sumX=0;
+        int sumY=0;
         for(int i=0;i<pix.size();i++)
         {
             sumX+=pix[i].x;
             sumY+=pix[i].y;
         }
-        centerX = (int)(sumX/pix.size());
-        centerY = (int)(sumY/pix.size());
-        //rollCX+=centerX;
-        //rollCY+=centerY;
-        rollCX=30;
-        rollCY=30;
+        centerX = (sumX/pix.size());
+        centerY = (sumY/pix.size());
+        printf("X:%d;Y:%d", rollCX, rollCY);
+        rollCX+=centerX;
+        rollCY+=centerY;
     }
 };
 
@@ -147,6 +146,7 @@ vector<pixel> load_file(const char *file)
     {
         int x,y,r,g,b;
         stat = fscanf(fl,"%d,%d;%d,%d,%d\n", &x, &y, &r, &g, &b);
+        if(x>2000 || y>2000){ printf(":::"); continue;}
         pixs.insert(pixs.end(), pixel(x,y,RGB(r,g,b)));
     }
     fclose(fl);
