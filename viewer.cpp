@@ -8,7 +8,8 @@ int main()
     char mod[20], *message;
     long Time = 0, T0 = 0;
     movsCtrl mvs;
-    message = txInputBox("¬ведите название группы:");
+    message = txInputBox("¬ведите название группы:", NULL, "");
+    if(message[0] == 0) return 1;
     strcat(message,".txt");
     mvs = movsCtrl(message);
     txCreateWindow(800,500, true);
@@ -25,16 +26,16 @@ int main()
         {
             for(int i=0;i<mvs.movs[k].pix.size();i++)
             {
-                for(int x=mvs.movs[k].pix[i].x;x<mvs.movs[k].pix[i].x+4;x++)
+                for(double x=mvs.movs[k].pix[i].x;x<mvs.movs[k].pix[i].x+4;x++)
                 {
                     //printf("X:%d;Y:%d",mvs.movs[k].pix[i].x ,mvs.movs[k].pix[i].y);
-                    for(int y=mvs.movs[k].pix[i].y;y<mvs.movs[k].pix[i].y+4;y++)
+                    for(double y=mvs.movs[k].pix[i].y;y<mvs.movs[k].pix[i].y+4;y++)
                     txSetPixel(x, y,mvs.movs[k].pix[i].color);
                 }
             }
             mvs.movs[k].do_move();
         }
-        sprintf(mod, "TIME:%d;X:%d,Y:%d\0", ((TIME - T0)/10)%1000, mvs.movs[0].pix[1].x, mvs.movs[0].pix[1].y);
+        sprintf(mod, "TIME:%d;X:%f,Y:%f\0", ((TIME - T0)/10)%1000, mvs.movs[0].pix[1].x, mvs.movs[0].pix[1].y);
         txTextOut(500, 30, mod);
         txSleep(10);
     }

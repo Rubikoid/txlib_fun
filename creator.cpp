@@ -14,7 +14,8 @@ int main()
     long Time = 0, T0 = 0;
     vector<pixel> pixs;
     //vars
-    message = txInputBox("¬ведите название группы:");
+    message = txInputBox("¬ведите название группы:", NULL, "");
+    if(message[0] == 0) return 1;
     strcat(message,".txt");
     pixs = load_file(message);
     txCreateWindow(800,500, true);
@@ -29,7 +30,7 @@ int main()
         txClear();
         sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
-        for(int i=0;i<pixs.size();i++){ for(int x=pixs[i].x;x<pixs[i].x+4;x++){ for(int y=pixs[i].y;y<pixs[i].y+4;y++) txSetPixel(x, y,pixs[i].color); } }
+        for(int i=0;i<pixs.size();i++){ for(double x=pixs[i].x;x<pixs[i].x+4;x++){ for(double y=pixs[i].y;y<pixs[i].y+4;y++) txSetPixel(x, y,pixs[i].color); } }
         if (txMouseButtons() & 1)
         {
             if(mode == 0){ pixs.insert(pixs.end(), pixel(txMouseX(),txMouseY(),RGB(0,255,0))); }

@@ -14,16 +14,16 @@ void save_file(const char *file,vector<pixel> pixs);
 int irand(int min, int max);
 double sinus(float roll);
 double cosin(float roll);
-double rollX(int x, int y, int cX, int cY, float roll);
-double rollY(int x, int y, int cX, int cY, float roll);
+double rollX(double x, double y, double cX, double cY, float roll);
+double rollY(double x, double y, double cX, double cY, float roll);
 
 class pixel
 {
     public:
-    int x;
-    int y;
+    double x;
+    double y;
     COLORREF color;
-    pixel(int X, int Y, COLORREF col)
+    pixel(double X, double Y, COLORREF col)
     {
         x = X;
         y = Y;
@@ -40,13 +40,13 @@ class mv
     public:
     vector<pixel> pix;
     char name[40];
-    int x;
-    int y;
-    int rollCX;
-    int rollCY;
+    double x;
+    double y;
+    double rollCX;
+    double rollCY;
     float roll;
-    int centerX;
-    int centerY;
+    double centerX;
+    double centerY;
     mv(const char *file)
     {
         strcpy(name, file);
@@ -66,8 +66,8 @@ class mv
         for(int i=0;i<pix.size();i++)
         {
             int x_start = pix[i].x;
-            pix[i].x = (int)rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
-            pix[i].y = (int)rollY(x_start, pix[i].y, rollCX, rollCY, roll);
+            pix[i].x = rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
+            pix[i].y = rollY(x_start, pix[i].y, rollCX, rollCY, roll);
             pix[i].x += x;
             pix[i].y += y;
         }
@@ -89,7 +89,7 @@ class mv
         }
         centerX = (sumX/pix.size());
         centerY = (sumY/pix.size());
-        printf("X:%d;Y:%d", rollCX, rollCY);
+        //printf("X:%f;Y:%f", rollCX, rollCY);
         rollCX+=centerX;
         rollCY+=centerY;
     }
@@ -122,10 +122,13 @@ class movsCtrl
             }
             else
             {
-                if(stage == 0){sscanf(mes,"%d,%d", &last_mv.x, &last_mv.y); stage++;}
+                float tmpx, tmpy, rolx, roly;
+                if(stage == 0){sscanf(mes,"%f,%f", &tmpx, &tmpy); last_mv.x = tmpx; last_mv.y = tmpy; stage++;}
                 else if(stage == 1)
                 {
-                    sscanf(mes,"%d,%d,%f", &last_mv.rollCX, &last_mv.rollCY, &last_mv.roll);
+                    sscanf(mes,"%f,%f,%f", &rolx, &roly, &last_mv.roll);
+                    last_mv.rollCX = rolx;
+                    last_mv.rollCY = roly;
                     last_mv.get_center();
                     stage++;
                 }
@@ -144,9 +147,10 @@ vector<pixel> load_file(const char *file)
     int stat = 0;
     while(stat != EOF)
     {
-        int x,y,r,g,b;
-        stat = fscanf(fl,"%d,%d;%d,%d,%d\n", &x, &y, &r, &g, &b);
-        if(x>2000 || y>2000){ printf(":::"); continue;}
+        float x,y;
+        int r,g,b;
+        stat = fscanf(fl,"%f,%f;%d,%d,%d\n", &x, &y, &r, &g, &b);
+        if(x>2000.0 || y>2000.0){ continue;}
         pixs.insert(pixs.end(), pixel(x,y,RGB(r,g,b)));
     }
     fclose(fl);
@@ -157,7 +161,7 @@ void save_file(const char *file,vector<pixel> pixs)
 {
     FILE *fl;
     fl= fopen(file, "w");
-    for(int i=0;i<pixs.size()-1;i++){ fprintf(fl, "%d,%d;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
+    for(int i=0;i<pixs.size()-1;i++){ fprintf(fl, "%f,%f;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
     fclose(fl);
 }
 
@@ -169,14 +173,14 @@ int irand(int min, int max)
 
 double sinus(float roll)
 {
-    return (double)sin(roll * M_PI / 180);
+    return (double)sin(roll * M_PI / 180.0);
 }
 double cosin(float roll)
 {
-    return (double)cos(roll * M_PI / 180);
+    return (double)cos(roll * M_PI / 180.0);
 }
 
-double rollX(int x, int y, int cX, int cY, float roll)
+double rollX(double x, double y, double cX, double cY, float roll)
 {
     int rx = x - cX;
     int ry = y - cY;
@@ -186,7 +190,7 @@ double rollX(int x, int y, int cX, int cY, float roll)
     //return 0.0;
 }
 
-double rollY(int x, int y, int cX, int cY, float roll)
+double rollY(double x, double y, double cX, double cY, float roll)
 {
     int rx = x - cX;
     int ry = y - cY;
