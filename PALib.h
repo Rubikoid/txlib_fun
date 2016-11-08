@@ -65,7 +65,7 @@ class mv
         //printf("%d,%d, %f\n", rollCX, rollCY, roll);
         for(int i=0;i<pix.size();i++)
         {
-            int x_start = pix[i].x;
+            double x_start = pix[i].x;
             pix[i].x = rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
             pix[i].y = rollY(x_start, pix[i].y, rollCX, rollCY, roll);
             pix[i].x += x;
@@ -80,8 +80,8 @@ class mv
     void get_center()
     {
         if(pix.size() <= 0) return;
-        int sumX=0;
-        int sumY=0;
+        double sumX=0;
+        double sumY=0;
         for(int i=0;i<pix.size();i++)
         {
             sumX+=pix[i].x;
@@ -182,8 +182,8 @@ double cosin(float roll)
 
 double rollX(double x, double y, double cX, double cY, float roll)
 {
-    int rx = x - cX;
-    int ry = y - cY;
+    double rx = x - cX;
+    double ry = y - cY;
     double ret = rx*cosin(roll)+ry*sinus(roll)+cX;
     return ret;
 	//return ((x)*cosin(roll)+(y)*sinus(roll));
@@ -192,8 +192,8 @@ double rollX(double x, double y, double cX, double cY, float roll)
 
 double rollY(double x, double y, double cX, double cY, float roll)
 {
-    int rx = x - cX;
-    int ry = y - cY;
+    double rx = x - cX;
+    double ry = y - cY;
     double ret = ry*cosin(roll) - rx*sinus(roll)+cY;
     return ret;
 	//return ((y)*cosin(roll) - (x)*sinus(roll));

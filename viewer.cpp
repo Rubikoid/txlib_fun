@@ -35,7 +35,7 @@ int main()
             }
             mvs.movs[k].do_move();
         }
-        sprintf(mod, "TIME:%d;X:%f,Y:%f\0", ((TIME - T0)/10)%1000, mvs.movs[0].pix[1].x, mvs.movs[0].pix[1].y);
+        sprintf(mod, "TIME:%d;\0", ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
         txSleep(10);
     }
