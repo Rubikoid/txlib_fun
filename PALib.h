@@ -1,5 +1,6 @@
 #include <vector>
 #include <math.h>
+#include <string>
 
 using namespace std;
 
@@ -29,6 +30,22 @@ class pixel
         y = Y;
         color = col;
     }
+
+    void roll(double cX, double cY, float rol)
+    {
+        double x_start = x;
+        x = rollX(x, y, cX, cY, rol);
+        y = rollY(x_start, y, cX, cY, rol);
+    }
+
+
+
+    void move(double mx, double my)
+    {
+        x+=mx;
+        y+=my;
+    }
+
     pixel()
     {
 
@@ -62,14 +79,10 @@ class mv
     mv(){}
     void do_move()
     {
-        //printf("%d,%d, %f\n", rollCX, rollCY, roll);
         for(int i=0;i<pix.size();i++)
         {
-            double x_start = pix[i].x;
-            pix[i].x = rollX(pix[i].x, pix[i].y, rollCX, rollCY, roll);
-            pix[i].y = rollY(x_start, pix[i].y, rollCX, rollCY, roll);
-            pix[i].x += x;
-            pix[i].y += y;
+            pix[i].roll(rollCX, rollCY, roll);
+            pix[i].move(x,y);
         }
         centerX+=x;
         centerY+=y;
@@ -89,10 +102,41 @@ class mv
         }
         centerX = (sumX/pix.size());
         centerY = (sumY/pix.size());
-        //printf("X:%f;Y:%f", rollCX, rollCY);
         rollCX+=centerX;
         rollCY+=centerY;
     }
+};
+
+class pixCtrl
+{
+    public:
+    vector< vector<pixel> > pixs;
+    vector<string> names;
+    pixCtrl(const char *file)
+    {
+        pixs = vector< vector<pixel> >(0);
+        FILE *fl;
+        fl = fopen(file, "r");
+        int stat = 0;
+        char mes[300];
+        while(stat != EOF)
+        {
+            stat = fscanf(fl,"%s\n", &mes);
+            if(stat == EOF) break;
+            if(strchr(mes, ':') != NULL)
+            {
+                char *tmp = strtok(mes,":");
+                strcat(mes,".txt");
+                vector<pixel> px = load_file(mes);
+                pixs.push_back(px);
+                names.push_back(string(mes));
+            }
+            else break;
+        }
+        if(pixs.size()==0) {vector<pixel> px = load_file(file); pixs.push_back(px); names.push_back(string(file));}
+    }
+
+    pixCtrl(){}
 };
 
 class movsCtrl
