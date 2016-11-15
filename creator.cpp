@@ -4,7 +4,7 @@
 #include "PALib.h"
 
 
-#define mode_max 1
+#define mode_max 3
 
 void drow(vector<pixel> pixs);
 
@@ -14,15 +14,15 @@ int main()
     int mode = mode_max;
     char mod[20], *message;
     long Time = 0, T0 = 0;
-    pixCtrl pixs;
+    pixCtrl pixCt;
     //vars
     message = txInputBox("¬ведите название группы:", NULL, "");
     if(message[0] == 0) return 1;
     strcat(message,".txt");
-    pixs = pixCtrl(message);
     txCreateWindow(800,500, true);
     txSetFillColour(RGB(50,50,50));
-    txTextCursor(false);
+    pixCt = pixCtrl(message);
+    //txTextCursor(false);
     txClear();
     Time = TIME;
     T0 = Time;
@@ -32,11 +32,37 @@ int main()
         txClear();
         sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
-        for(int i=0; i<pixs.pixs.size(); i++) drow(pixs.pixs[i]);
+        for(int i=0; i<pixCt.pixs.size(); i++) drow(pixCt.pixs[i]);
         if (txMouseButtons() & 1)
         {
-            if(mode == 0){ pixs.pixs[0].insert(pixs.pixs[0].end(), pixel(txMouseX(),txMouseY(),RGB(0,255,0))); }
-            else if(mode == 1) ;
+            if(mode == 0){ pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(txMouseX(),txMouseY(),RGB(0,255,0))); }
+            else if(mode == mode_max) ;
+        }
+        else if(KEY(VK_LEFT) || KEY(VK_UP) || KEY(VK_RIGHT) || KEY(VK_DOWN))
+        {
+            if(mode == 1)
+            {
+                for(int i=0;i<pixCt.pixs[0].size();i++)
+                {
+                    if(KEY(VK_LEFT)) pixCt.pixs[0][i].move(-1,0);
+                    if(KEY(VK_RIGHT)) pixCt.pixs[0][i].move(1,0);
+                    if(KEY(VK_UP)) pixCt.pixs[0][i].move(0,-1);
+                    if(KEY(VK_DOWN)) pixCt.pixs[0][i].move(0,1);
+                }
+            }
+            else if(mode == 2)
+            {
+                for(int j=0;j<pixCt.pixs.size();j++)
+                {
+                    for(int i=0;i<pixCt.pixs[j].size();i++)
+                    {
+                        if(KEY(VK_LEFT)) pixCt.pixs[j][i].move(-1,0);
+                        if(KEY(VK_RIGHT)) pixCt.pixs[j][i].move(1,0);
+                        if(KEY(VK_UP)) pixCt.pixs[j][i].move(0,-1);
+                        if(KEY(VK_DOWN)) pixCt.pixs[j][i].move(0,1);
+                    }
+                }
+            }
         }
         else if (KEY(VK_SPACE) && TIME - Time > 2)
         {
@@ -47,14 +73,14 @@ int main()
         }
         else if (KEY(VK_F1))
         {
-            pixs.pixs[0].clear();
-            pixs.pixs[0].insert(pixs.pixs[0].end(), pixel(-1,-1,RGB(255,0,0)));
+            pixCt.pixs[0].clear();
+            pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(-1,-1,RGB(255,0,0)));
             txClear();
         }
         txSleep(10);
     }
     txEnd();
-    save_file(pixs.names[0].c_str(), pixs.pixs[0]);
+    for(int j=0;j<pixCt.pixs.size();j++) save_file(pixCt.names[j].c_str(), pixCt.pixs[j]);
     return 0;
 }
 

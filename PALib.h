@@ -46,10 +46,40 @@ class pixel
         y+=my;
     }
 
-    pixel()
-    {
+    pixel(){}
+};
 
+class pixCtrl
+{
+    public:
+    vector< vector<pixel> > pixs;
+    vector<string> names;
+    pixCtrl(const char *file)
+    {
+        pixs = vector< vector<pixel> >(0);
+        FILE *fl;
+        fl = fopen(file, "r");;
+        int stat = 0;
+        char mes[300];
+        while(stat != EOF)
+        {
+            stat = fscanf(fl,"%s\n", &mes);
+            if(stat == EOF) break;
+            if(strchr(mes, ':') != NULL)
+            {
+                char *tmp = strtok(mes,":");
+                strcat(mes,".txt");
+                vector<pixel> px = load_file(mes);
+                pixs.push_back(px);
+                names.push_back(string(mes));
+            }
+            else break;
+        }
+        fclose(fl);
+        if(pixs.size()==0) { vector<pixel> px = load_file(file); pixs.push_back(px); names.push_back(string(file));}
     }
+
+    pixCtrl(){}
 };
 
 class mv
@@ -90,9 +120,15 @@ class mv
         rollCY+=y;
     }
 
-    void get_center()
+    void get_center(double nX=0.0, double nY=0.0)
     {
         if(pix.size() <= 0) return;
+        if(nX != 0.0 && nY != 0.0)
+        {
+            rollCX = nX;
+            rollCY = nY;
+            return;
+        }
         double sumX=0;
         double sumY=0;
         for(int i=0;i<pix.size();i++)
@@ -105,38 +141,6 @@ class mv
         rollCX+=centerX;
         rollCY+=centerY;
     }
-};
-
-class pixCtrl
-{
-    public:
-    vector< vector<pixel> > pixs;
-    vector<string> names;
-    pixCtrl(const char *file)
-    {
-        pixs = vector< vector<pixel> >(0);
-        FILE *fl;
-        fl = fopen(file, "r");
-        int stat = 0;
-        char mes[300];
-        while(stat != EOF)
-        {
-            stat = fscanf(fl,"%s\n", &mes);
-            if(stat == EOF) break;
-            if(strchr(mes, ':') != NULL)
-            {
-                char *tmp = strtok(mes,":");
-                strcat(mes,".txt");
-                vector<pixel> px = load_file(mes);
-                pixs.push_back(px);
-                names.push_back(string(mes));
-            }
-            else break;
-        }
-        if(pixs.size()==0) {vector<pixel> px = load_file(file); pixs.push_back(px); names.push_back(string(file));}
-    }
-
-    pixCtrl(){}
 };
 
 class movsCtrl
@@ -173,7 +177,9 @@ class movsCtrl
                     sscanf(mes,"%f,%f,%f", &rolx, &roly, &last_mv.roll);
                     last_mv.rollCX = rolx;
                     last_mv.rollCY = roly;
-                    last_mv.get_center();
+                    //last_mv.get_center();
+                    if(movs.size() > 0) last_mv.get_center(movs[0].rollCX, movs[0].rollCY);
+                    else last_mv.get_center();
                     stage++;
                 }
             }
@@ -191,13 +197,14 @@ vector<pixel> load_file(const char *file)
     int stat = 0;
     while(stat != EOF)
     {
-        float x,y;
-        int r,g,b;
+        float x=-100.0,y=-100.0;
+        int r=0,g=0,b=0;
         stat = fscanf(fl,"%f,%f;%d,%d,%d\n", &x, &y, &r, &g, &b);
-        if(x>2000.0 || y>2000.0){ continue;}
+        if(x>2000.0 || y>2000.0 || (x == -100.0 && y== -100.0 && r == 0 && g == 0)){ continue;}
         pixs.insert(pixs.end(), pixel(x,y,RGB(r,g,b)));
     }
     fclose(fl);
+    if(pixs.size() == 0){ printf("new"); pixs.insert(pixs.end(), pixel(-100,-100,RGB(0,0,0))); }//null pixel
     return pixs;
 }
 
@@ -205,7 +212,7 @@ void save_file(const char *file,vector<pixel> pixs)
 {
     FILE *fl;
     fl= fopen(file, "w");
-    for(int i=0;i<pixs.size()-1;i++){ fprintf(fl, "%f,%f;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
+    for(int i=0;i<pixs.size();i++){ if(pixs[i].x < 0 || pixs[i].y < 0) continue; fprintf(fl, "%f,%f;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
     fclose(fl);
 }
 

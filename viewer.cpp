@@ -3,6 +3,8 @@
 #include "windows.h"
 #include "PALib.h"
 
+void drow(mv mvm);
+
 int main()
 {
     char mod[20], *message;
@@ -24,21 +26,25 @@ int main()
         txClear();
         for(int k=0;k<mvs.movs.size();k++)
         {
-            for(int i=0;i<mvs.movs[k].pix.size();i++)
-            {
-                for(double x=mvs.movs[k].pix[i].x;x<mvs.movs[k].pix[i].x+4;x++)
-                {
-                    //printf("X:%d;Y:%d",mvs.movs[k].pix[i].x ,mvs.movs[k].pix[i].y);
-                    for(double y=mvs.movs[k].pix[i].y;y<mvs.movs[k].pix[i].y+4;y++)
-                    txSetPixel(x, y,mvs.movs[k].pix[i].color);
-                }
-            }
+            drow(mvs.movs[k]);
             mvs.movs[k].do_move();
         }
-        sprintf(mod, "TIME:%d;\0", ((TIME - T0)/10)%1000);
+        sprintf(mod, "TIME:%d;DiffX:%f;DiffY:%f\0", ((TIME - T0)/10)%1000, txMouseX() - mvs.movs[0].rollCX, txMouseY() - mvs.movs[0].rollCY);
         txTextOut(500, 30, mod);
         txSleep(10);
     }
     txEnd();
     return 0;
+}
+
+
+void drow(mv mvm)
+{
+    for(int i=0;i<mvm.pix.size();i++)
+    {
+        for(double x=mvm.pix[i].x;x<mvm.pix[i].x+4;x++)
+        {
+            for(double y=mvm.pix[i].y;y<mvm.pix[i].y+4;y++) txSetPixel(x, y,mvm.pix[i].color);
+        }
+    }
 }
