@@ -58,7 +58,8 @@ class pixCtrl
     {
         pixs = vector< vector<pixel> >(0);
         FILE *fl;
-        fl = fopen(file, "r");;
+        if(access(file,0)) fclose(fopen(file, "w"));
+        fl = fopen(file, "r");
         int stat = 0;
         char mes[300];
         while(stat != EOF)
@@ -104,7 +105,7 @@ class mv
         rollCY=0;
         roll = 0.0;
         centerX=0;
-        centerY=0;
+        centerY=0;fclose(fopen(file, "a"));
     }
     mv(){}
     void do_move()
@@ -193,6 +194,7 @@ vector<pixel> load_file(const char *file)
 {
     FILE *fl;
     vector<pixel> pixs(0);
+    if(access(file,0)) fclose(fopen(file, "w"));
     fl = fopen(file, "r");
     int stat = 0;
     while(stat != EOF)

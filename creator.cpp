@@ -7,6 +7,7 @@
 #define mode_max 3
 
 void drow(vector<pixel> pixs);
+void resetCol();
 
 int main()
 {
@@ -20,15 +21,16 @@ int main()
     if(message[0] == 0) return 1;
     strcat(message,".txt");
     txCreateWindow(800,500, true);
-    txSetFillColour(RGB(50,50,50));
     pixCt = pixCtrl(message);
-    //txTextCursor(false);
+    txTextCursor(false);
+    resetCol();
     txClear();
     Time = TIME;
     T0 = Time;
     txBegin();
     while(!KEY(VK_ESCAPE))
     {
+        resetCol();
         txClear();
         sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
         txTextOut(500, 30, mod);
@@ -69,12 +71,14 @@ int main()
             mode++;
             if(mode>mode_max) mode = 0;
             Time = TIME;
+            resetCol();
             txClear();
         }
         else if (KEY(VK_F1))
         {
             pixCt.pixs[0].clear();
             pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(-1,-1,RGB(255,0,0)));
+            resetCol();
             txClear();
         }
         txSleep(10);
@@ -89,10 +93,19 @@ void drow(vector<pixel> pixs)
 {
     for(int i=0;i<pixs.size();i++)
     {
-        for(double x=pixs[i].x;x<pixs[i].x+4;x++)
+        txSetColor(pixs[i].color,1);
+        txSetFillColor(pixs[i].color);
+        txCircle(pixs[i].x,pixs[i].y,3);
+        /*for(double x=pixs[i].x;x<pixs[i].x+4;x++)
         {
             for(double y=pixs[i].y;y<pixs[i].y+4;y++) txSetPixel(x, y,pixs[i].color);
-        }
+        }*/
     }
+}
+
+void resetCol()
+{
+    txSetFillColour(RGB(50,50,50));
+    txSetColor(TX_WHITE, 1);
 }
 
