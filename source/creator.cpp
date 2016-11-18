@@ -1,6 +1,7 @@
 #include "../head/grap.h"
 
-#define mode_max 3
+#define mode_max 4
+#define SIZE 6
 
 int main()
 {
@@ -13,6 +14,7 @@ int main()
     message = txInputBox("¬ведите название группы:", NULL, "");
     if(message[0] == 0) return 1;
     strcat(message,".txt");
+    pixCt = pixCtrl(message);
     init(800,500);
     Time = TIME;
     T0 = Time;
@@ -27,11 +29,15 @@ int main()
         if (txMouseButtons() & 1)
         {
             if(mode == 0){ pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(txMouseX(),txMouseY(),RGB(0,255,0))); }
+            else if(mode == 1)
+            {
+                for(int i=-SIZE;i<SIZE;i+=3) for(int j=-SIZE;j<SIZE;j+=3) pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(txMouseX()+i,txMouseY()+j,RGB(0,255,0)));
+            }
             else if(mode == mode_max) ;
         }
         else if(KEY(VK_LEFT) || KEY(VK_UP) || KEY(VK_RIGHT) || KEY(VK_DOWN))
         {
-            if(mode == 1)
+            if(mode == 2)
             {
                 for(int i=0;i<pixCt.pixs[0].size();i++)
                 {
@@ -41,7 +47,7 @@ int main()
                     if(KEY(VK_DOWN)) pixCt.pixs[0][i].move(0,1);
                 }
             }
-            else if(mode == 2)
+            else if(mode == 3)
             {
                 for(int j=0;j<pixCt.pixs.size();j++)
                 {
