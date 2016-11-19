@@ -3,9 +3,11 @@
 #include "windows.h"
 #include "PALib.h"
 
+#ifndef GRAP_H
+#define GRAP_H
 void resetCol();
-void draw_mv(mv mvm, int isCir = 1);
-void draw_pix(vector<pixel> pixs, int isCir = 1);
+void draw_mv(mv mvm, int isCir);
+void draw_pix(vector<pixel> pixs, int isCir);
 void init();
 
 void init(int x, int y)
@@ -16,7 +18,8 @@ void init(int x, int y)
     txClear();
 }
 
-void draw_pix(vector<pixel> pixs, int isCir = 1)
+void draw_mv(mv mvm, int isCir = 1)
+{
     for(int i=0;i<mvm.pix.size();i++)
     {
         if(isCir)
@@ -60,3 +63,4 @@ void resetCol()
     txSetFillColour(RGB(50,50,50));
     txSetColor(TX_WHITE, 1);
 }
+#endif
