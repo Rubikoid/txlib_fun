@@ -2,6 +2,16 @@
 #include <math.h>
 #include <string>
 
+/*!
+    @file
+    @brief Заголовочный файл с основными классами
+    @author Dmitry Zotov
+
+    Данный файл содержит объявления и описания основных классов и функций.
+*/
+
+#ifndef PALIB_H
+#define PALIB_H
 using namespace std;
 
 #define TIME     GetTickCount()/100
@@ -18,12 +28,29 @@ double cosin(float roll);
 double rollX(double x, double y, double cX, double cY, float roll);
 double rollY(double x, double y, double cX, double cY, float roll);
 
+/*!
+    @brief Класс пикселя
+
+    Класс, отвечающий за содержание и действия с одним пикселем
+*/
 class pixel
 {
     public:
+    //! X координата пикселя
     double x;
+    //! Y координата пикселя
     double y;
+    //! Цвет пикселя в структуре #COLORREF
     COLORREF color;
+
+    /*!
+        @brief Конструктор
+
+        Конструктор, задающий начальные параметры пикселя
+
+        @param X,Y Координаты
+        @param col Цвет пикселя
+    */
     pixel(double X, double Y, COLORREF col)
     {
         x = X;
@@ -31,6 +58,14 @@ class pixel
         color = col;
     }
 
+    /*!
+        @brief Поворот пикселя
+
+        Поворачивает пиксель вокруг точки с координатами @p @a cX, @p @a cY на @p @a rol градусов c использованием функции #rollX и #rollY
+
+        @param cX,cY Координаты центра
+        @param rol Угол повората в градусах
+    */
     void roll(double cX, double cY, float rol)
     {
         double x_start = x;
@@ -38,14 +73,20 @@ class pixel
         y = rollY(x_start, y, cX, cY, rol);
     }
 
+    /*!
+        @brief Перемещение пикселя
 
+        Перемещается пиксель на @p @a mx, @p @a my
 
+        @param mx,my Координаты перемещения
+    */
     void move(double mx, double my)
     {
         x+=mx;
         y+=my;
     }
 
+    //! Пустой конструктор для работы с векторами
     pixel(){}
 };
 
@@ -105,7 +146,7 @@ class mv
         rollCY=0;
         roll = 0.0;
         centerX=0;
-        centerY=0;fclose(fopen(file, "a"));
+        centerY=0;
     }
     mv(){}
     void do_move()
@@ -218,37 +259,78 @@ void save_file(const char *file,vector<pixel> pixs)
     fclose(fl);
 }
 
+/*!
+    @brief Вычисление рандомного числа
 
+    Вычисляет рандомное число от @p @a min до @p @a max включительно
+
+    @param min,max Ограничители числа
+    @return Рандомное число
+*/
 int irand(int min, int max)
 {
     return rand() % max + min;
 }
 
+/*!
+    @brief Вычисляет синус от угла в градусах
+
+    @param roll Угол в градусах
+    @return Синус угла
+*/
 double sinus(float roll)
 {
     return (double)sin(roll * M_PI / 180.0);
 }
+
+/*!
+    @brief Вычисляет косинус от угла в градусах
+
+    @param roll Угол в градусах
+    @return Косинус угла
+*/
 double cosin(float roll)
 {
     return (double)cos(roll * M_PI / 180.0);
 }
 
+/*!
+    @brief Вычисление X координаты точки после поворота
+
+    Вычисляет новую X координату точки после поворота относительно центра @p @a cX, @p @a cY на @p @a roll градусов.
+    @param x,y Координаты точки
+    @param cX,cY Координаты центра
+    @param roll Угол поворота
+    @return Новая X координата
+
+    @warning Угол в градусах
+    @warning При положжительном угле поворот происходит против часовой стрелки
+*/
 double rollX(double x, double y, double cX, double cY, float roll)
 {
     double rx = x - cX;
     double ry = y - cY;
     double ret = rx*cosin(roll)+ry*sinus(roll)+cX;
     return ret;
-	//return ((x)*cosin(roll)+(y)*sinus(roll));
-    //return 0.0;
 }
 
+/*!
+    @brief Вычисление Y координаты точки после поворота
+
+    Вычисляет новую Y координату точки после поворота относительно центра @p @a cX, @p @a cY на @p @a roll градусов.
+    @param x,y Координаты точки
+    @param cX,cY Координаты центра
+    @param roll Угол поворота
+    @return Новая Y координата
+
+    @warning Угол в градусах
+    @warning При положжительном угле поворот происходит против часовой стрелки
+*/
 double rollY(double x, double y, double cX, double cY, float roll)
 {
     double rx = x - cX;
     double ry = y - cY;
     double ret = ry*cosin(roll) - rx*sinus(roll)+cY;
     return ret;
-	//return ((y)*cosin(roll) - (x)*sinus(roll));
-    //return 0.0;
 }
+#endif
