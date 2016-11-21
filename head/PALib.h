@@ -9,6 +9,12 @@
 #ifndef PALIB_H
 #define PALIB_H
 
+#include <vector>
+#include <string>
+#include "TXLib.h"
+
+using namespace std;
+
 #define TIME     GetTickCount()/100
 #define KEY      GetAsyncKeyState
 

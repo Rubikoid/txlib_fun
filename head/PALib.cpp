@@ -93,7 +93,7 @@ void mv::do_move()
 	rollCY+=y;
 }
 
-void mv::get_center(double nX=0.0, double nY=0.0)
+void mv::get_center(double nX, double nY)
 {
 	if(pix.size() <= 0) return;
 	if(nX != 0.0 && nY != 0.0)

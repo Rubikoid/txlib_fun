@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "TXLib.h"
-#include "windows.h"
 #include "PALib.h"
 #include "grap.h"
 
@@ -12,7 +11,7 @@ void init(int x, int y)
     txClear();
 }
 
-void draw_mv(mv mvm, int isCir = 1)
+void draw_mv(mv mvm, int isCir)
 {
     for(int i=0;i<mvm.pix.size();i++)
     {
@@ -32,7 +31,7 @@ void draw_mv(mv mvm, int isCir = 1)
     }
 }
 
-void draw_pix(vector<pixel> pixs, int isCir = 1)
+void draw_pix(vector<pixel> pixs, int isCir)
 {
     for(int i=0;i<pixs.size();i++)
     {
