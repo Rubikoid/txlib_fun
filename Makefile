@@ -23,10 +23,10 @@ viewer.o: obj ./source/viewer.cpp
 	$(CC) -c ./source/viewer.cpp -o ./obj/viewer.o
 	
 obj: 
-	mkdir ./obj
+	mkdir .\obj
 
 bin:
-	mkdir ./bin
+	mkdir .\bin
 	
 clean:
-	rm -rf ./obj/*.o ./bin/*
+	del /Q .\obj\* .\bin\*
