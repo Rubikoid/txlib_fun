@@ -29,3 +29,8 @@
 *.app
 
 *.txt
+
+*.html
+*.js
+*.png
+*.css

@@ -1,7 +1,8 @@
-#include "TXLib.h"
+#include "../head/TXLib.h"
 #include <stdio.h>
 #include "windows.h"
-#include "PALib.h"
+#include "../head/PALib.h"
+
 void work(int secs, int h, int m, int radi);
 void draw_time(int cX, int cY, int seconds, int minutes, int horses, int radi);
 void draw_line(int cX, int cY, int radi, int one_len, float angle);
