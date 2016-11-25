@@ -45,4 +45,12 @@ void draw_pix(vector<pixel> pixs, int isCir = 1);
 */
 void init(int x, int y);
 
+void clear();
+void begin();
+void end();
+void gsleep(int sleep);
+void textOut(int x, int y, char *text);
+int MouseButt();
+int MouseX();
+int MouseY();
 #endif
