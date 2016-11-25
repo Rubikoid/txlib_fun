@@ -3,6 +3,14 @@
 #include "PALib.h"
 #include "grap.h"
 
+/*!
+    @file
+    @brief Заголовочный файл с функциями графики
+    @author Dmitry Zotov
+
+    Данный файл содержит описания функций работы с графикой
+*/
+
 void init(int x, int y)
 {
     txCreateWindow(x,y, true);
