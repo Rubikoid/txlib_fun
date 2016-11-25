@@ -18,20 +18,20 @@ int main()
     init(800,500);
     Time = TIME;
     T0 = Time;
-    txBegin();
+    begin();
     while(!KEY(VK_ESCAPE))
     {
         resetCol();
-        txClear();
+        clear();
         sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
-        txTextOut(500, 30, mod);
+        textOut(500, 30, mod);
         for(int i=0; i<pixCt.pixs.size(); i++) draw_pix(pixCt.pixs[i]);
-        if (txMouseButtons() & 1)
+        if (MouseButt() & 1)
         {
-            if(mode == 0){ pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(txMouseX(),txMouseY(),RGB(0,255,0))); }
+            if(mode == 0){ pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(MouseX(),MouseY(),RGB(0,255,0))); }
             else if(mode == 1)
             {
-                for(int i=-SIZE;i<SIZE;i+=3) for(int j=-SIZE;j<SIZE;j+=3) pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(txMouseX()+i,txMouseY()+j,RGB(0,255,0)));
+                for(int i=-SIZE;i<SIZE;i+=3) for(int j=-SIZE;j<SIZE;j+=3) pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(MouseX()+i,MouseY()+j,RGB(0,255,0)));
             }
             else if(mode == mode_max) ;
         }
@@ -67,18 +67,18 @@ int main()
             if(mode>mode_max) mode = 0;
             Time = TIME;
             resetCol();
-            txClear();
+            clear();
         }
         else if (KEY(VK_F1))
         {
             pixCt.pixs[0].clear();
             pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(-1,-1,RGB(255,0,0)));
             resetCol();
-            txClear();
+            clear();
         }
-        txSleep(10);
+        gsleep(10);
     }
-    txEnd();
+    end();
     for(int j=0;j<pixCt.pixs.size();j++) save_file(pixCt.names[j].c_str(), pixCt.pixs[j]);
     return 0;
 }
