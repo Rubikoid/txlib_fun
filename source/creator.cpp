@@ -23,9 +23,9 @@ int main()
     {
         resetCol();
         clear();
-        sprintf(mod, "MODE:%d,TIME:%d\0", mode, ((TIME - T0)/10)%1000);
+        sprintf(mod, "MODE:%d,TIME:%lu", mode, ((TIME - T0)/10)%1000);
         textOut(500, 30, mod);
-        for(int i=0; i<pixCt.pixs.size(); i++) draw_pix(pixCt.pixs[i]);
+        for(uint i=0; i<pixCt.pixs.size(); i++) draw_pix(pixCt.pixs[i]);
         if (MouseButt() & 1)
         {
             if(mode == 0){ pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(MouseX(),MouseY(),RGB(0,255,0))); }
@@ -33,13 +33,13 @@ int main()
             {
                 for(int i=-SIZE;i<SIZE;i+=3) for(int j=-SIZE;j<SIZE;j+=3) pixCt.pixs[0].insert(pixCt.pixs[0].end(), pixel(MouseX()+i,MouseY()+j,RGB(0,255,0)));
             }
-            else if(mode == mode_max) ;
+            //else if(mode == mode_max) ;
         }
         else if(KEY(VK_LEFT) || KEY(VK_UP) || KEY(VK_RIGHT) || KEY(VK_DOWN))
         {
             if(mode == 2)
             {
-                for(int i=0;i<pixCt.pixs[0].size();i++)
+                for(uint i=0;i<pixCt.pixs[0].size();i++)
                 {
                     if(KEY(VK_LEFT)) pixCt.pixs[0][i].move(-1,0);
                     if(KEY(VK_RIGHT)) pixCt.pixs[0][i].move(1,0);
@@ -49,9 +49,9 @@ int main()
             }
             else if(mode == 3)
             {
-                for(int j=0;j<pixCt.pixs.size();j++)
+                for(uint j=0;j<pixCt.pixs.size();j++)
                 {
-                    for(int i=0;i<pixCt.pixs[j].size();i++)
+                    for(uint i=0;i<pixCt.pixs[j].size();i++)
                     {
                         if(KEY(VK_LEFT)) pixCt.pixs[j][i].move(-1,0);
                         if(KEY(VK_RIGHT)) pixCt.pixs[j][i].move(1,0);
@@ -79,7 +79,7 @@ int main()
         gsleep(10);
     }
     end();
-    for(int j=0;j<pixCt.pixs.size();j++) save_file(pixCt.names[j].c_str(), pixCt.pixs[j]);
+    for(uint j=0;j<pixCt.pixs.size();j++) save_file(pixCt.names[j].c_str(), pixCt.pixs[j]);
     return 0;
 }
 

@@ -15,8 +15,9 @@
 
 using namespace std;
 
-#define TIME     GetTickCount()/100
-#define KEY      GetAsyncKeyState
+#define TIME		GetTickCount()/100
+#define KEY			GetAsyncKeyState
+#define uint 		unsigned int //govnokode for compare with vector.size()
 
 /*!
     @brief Класс пикселя

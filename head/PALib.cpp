@@ -48,11 +48,11 @@ pixCtrl::pixCtrl(const char *file)
 	char mes[300];
 	while(stat != EOF)
 	{
-		stat = fscanf(fl,"%s\n", &mes);
+		stat = fscanf(fl,"%s\n", mes);
 		if(stat == EOF) break;
 		if(strchr(mes, ':') != NULL)
 		{
-			char *tmp = strtok(mes,":");
+			strtok(mes,":");
 			strcat(mes,".txt");
 			vector<pixel> px = load_file(mes);
 			pixs.push_back(px);
@@ -82,7 +82,7 @@ mv::mv(const char *file)
 
 void mv::do_move()
 {
-	for(int i=0;i<pix.size();i++)
+	for(uint i=0;i<pix.size();i++)
 	{
 		pix[i].roll(rollCX, rollCY, roll);
 		pix[i].move(x,y);
@@ -104,7 +104,7 @@ void mv::get_center(double nX, double nY)
 	}
 	double sumX=0;
 	double sumY=0;
-	for(int i=0;i<pix.size();i++)
+	for(uint i=0;i<pix.size();i++)
 	{
 		sumX+=pix[i].x;
 		sumY+=pix[i].y;
@@ -128,11 +128,11 @@ movsCtrl::movsCtrl(const char *file)
 	mv last_mv;
 	while(stat != EOF)
 	{
-		stat = fscanf(fl,"%s\n", &mes);
+		stat = fscanf(fl,"%s\n", mes);
 		if(stat == EOF){ movs.insert(movs.end(), last_mv); break;}
 		if(strchr(mes, ':') != NULL)
 		{
-			char *tmp = strtok(mes,":");
+			strtok(mes,":");
 			strcat(mes,".txt");
 			if(start != 0) movs.insert(movs.end(), last_mv);
 			if(start == 0) start = 1;
@@ -183,7 +183,7 @@ void save_file(const char *file,vector<pixel> pixs)
 {
     FILE *fl;
     fl= fopen(file, "w");
-    for(int i=0;i<pixs.size();i++){ if(pixs[i].x < 0 || pixs[i].y < 0) continue; fprintf(fl, "%f,%f;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
+    for(uint i=0;i<pixs.size();i++){ if(pixs[i].x < 0 || pixs[i].y < 0) continue; fprintf(fl, "%f,%f;%d,%d,%d\n", pixs[i].x, pixs[i].y, GetRValue(pixs[i].color), GetGValue(pixs[i].color), GetBValue(pixs[i].color)); }
     fclose(fl);
 }
 
