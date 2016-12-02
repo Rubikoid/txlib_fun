@@ -17,9 +17,9 @@ int main()
     {
         resetCol();
         clear();
-        sprintf(mod, "TIME:%d;DiffX:%f;DiffY:%f\0", ((TIME - T0)/10)%1000, txMouseX() - mvs.movs[0].rollCX, txMouseY() - mvs.movs[0].rollCY);
+        sprintf(mod, "TIME:%lu;DiffX:%f;DiffY:%f", ((TIME - T0)/10)%1000, txMouseX() - mvs.movs[0].rollCX, txMouseY() - mvs.movs[0].rollCY);
         textOut(500, 30, mod);
-        for(int k=0;k<mvs.movs.size();k++)
+        for(uint k=0;k<mvs.movs.size();k++)
         {
             draw_mv(mvs.movs[k]);
             mvs.movs[k].do_move();
