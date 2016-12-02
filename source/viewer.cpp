@@ -5,7 +5,7 @@ int main()
     char mod[20], *message;
     long Time = 0, T0 = 0;
     movsCtrl mvs;
-    message = txInputBox("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РіСЂСѓРїРїС‹:", NULL, "");
+    message = txInputBox("Введите название группы:", NULL, "");
     if(message[0] == 0) return 1;
     strcat(message,".txt");
     mvs = movsCtrl(message);
