@@ -1,4 +1,4 @@
-CC=g++
+CC=g++ -Wall -Wextra -Wshadow
 
 all: creator viewer
 
