@@ -12,20 +12,20 @@ int main()
     init(800,500);
     Time = TIME;
     T0 = Time;
-    txBegin();
+    begin();
     while(!KEY(VK_ESCAPE))
     {
         resetCol();
-        txClear();
+        clear();
         sprintf(mod, "TIME:%d;DiffX:%f;DiffY:%f\0", ((TIME - T0)/10)%1000, txMouseX() - mvs.movs[0].rollCX, txMouseY() - mvs.movs[0].rollCY);
-        txTextOut(500, 30, mod);
+        textOut(500, 30, mod);
         for(int k=0;k<mvs.movs.size();k++)
         {
             draw_mv(mvs.movs[k]);
             mvs.movs[k].do_move();
         }
-        txSleep(10);
+        gsleep(10);
     }
-    txEnd();
+    end();
     return 0;
 }
