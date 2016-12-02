@@ -17,7 +17,7 @@ int main()
     {
         resetCol();
         clear();
-        sprintf(mod, "TIME:%lu;DiffX:%f;DiffY:%f", ((TIME - T0)/10)%1000, txMouseX() - mvs.movs[0].rollCX, txMouseY() - mvs.movs[0].rollCY);
+        sprintf(mod, "TIME:%lu;DiffX:%f;DiffY:%f", ((TIME - T0)/10)%1000, MouseX() - mvs.movs[0].rollCX, MouseY() - mvs.movs[0].rollCY);
         textOut(500, 30, mod);
         for(uint k=0;k<mvs.movs.size();k++)
         {
