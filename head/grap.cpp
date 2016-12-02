@@ -21,7 +21,7 @@ void init(int x, int y)
 
 void draw_mv(mv mvm, int isCir)
 {
-    for(int i=0;i<mvm.pix.size();i++)
+    for(uint i=0;i<mvm.pix.size();i++)
     {
         if(isCir)
         {
@@ -41,7 +41,7 @@ void draw_mv(mv mvm, int isCir)
 
 void draw_pix(vector<pixel> pixs, int isCir)
 {
-    for(int i=0;i<pixs.size();i++)
+    for(uint i=0;i<pixs.size();i++)
     {
         if(isCir)
         {
